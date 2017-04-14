@@ -14,29 +14,29 @@ import java.util.List;
  * 最近修改时间：2016/12/21 09:11
  * 修改人：Modify by sean
  */
-public interface IOperateDatabase<M, K> {
+public interface IOperateDatabase<T, K> {
     //增加
-    boolean insert(M m);
-    boolean insertOrReplace(@NonNull M m);
-    boolean insertList(List<M> mList);
-    boolean insertOrReplaceList(List<M> mList);
+    boolean insert(T entity);
+    boolean insertOrReplace(@NonNull T entity);
+    boolean insertList(List<T> mList);
+    boolean insertOrReplaceList(List<T> mList);
 
     //删除
-    boolean delete(M m);
+    boolean delete(T entity);
     boolean deleteByKey(K key);
-    boolean deleteList(List<M> mList);
+    boolean deleteList(List<T> mList);
     boolean deleteByKeyInTx(K... key);
     boolean deleteAll();
 
     //修改
-    boolean update(M m);
-    boolean updateInTx(M... m);
-    boolean updateList(List<M> mList);
+    boolean update(T entity);
+    boolean updateInTx(T... entities);
+    boolean updateList(List<T> mList);
 
     //查询
-    M selectByPrimaryKey(K key);
-    List<M> loadAll();
-    boolean refresh(M m);
+    T selectByPrimaryKey(K key);
+    List<T> loadAll();
+    boolean refresh(T entity);
 
     /**
      * 清理缓存
@@ -57,12 +57,12 @@ public interface IOperateDatabase<M, K> {
      * 自定义查询
      * @return
      */
-    QueryBuilder<M> getQueryBuilder();
+    QueryBuilder<T> getQueryBuilder();
 
     /**
      * @param where
      * @param selectionArg
      * @return
      */
-    List<M> queryRaw(String where, String... selectionArg);
+    List<T> queryRaw(String where, String... selectionArg);
 }

@@ -17,9 +17,9 @@ public class MyApplication extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
-        context = getApplicationContext();
+        context = this;
         //greenDao全局配置,只希望有一个数据库操作对象
-        GreenDaoManager.init();//初始化数据库
+        GreenDaoManager.init(this);//初始化数据库
     }
 
     public static Context getContext(){

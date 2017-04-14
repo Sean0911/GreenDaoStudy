@@ -24,12 +24,9 @@ import java.io.IOException;
 public class GreenDaoContext  extends ContextWrapper {
 
     private String currentUserId = "greendao";//一般用来针对一个用户一个数据库，以免数据混乱问题
-    private Context mContext;
 
-    public GreenDaoContext() {
-        super(MyApplication.getContext());
-        this.mContext = MyApplication.getContext();
-//        this.currentUserId = "greendao";//初始化
+    public GreenDaoContext(Context base) {
+        super(base);
     }
 
     /**
