@@ -13,11 +13,11 @@ import org.greenrobot.greendao.annotation.NotNull;
 
 /**
  * 类名称：User
- * 创建者：Create by liujc
+ * 创建者：Create by sean
  * 创建时间：Create on 2016/12/1 14:55
  * 描述：TODO
  * 最近修改时间：2016/12/1 14:55
- * 修改人：Modify by liujc
+ * 修改人：Modify by sean
  */
 @Entity
 public class User {

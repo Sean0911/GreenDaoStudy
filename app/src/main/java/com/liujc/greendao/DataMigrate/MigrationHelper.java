@@ -20,11 +20,11 @@ import java.util.List;
 
 /**
  * 类名称：MigrationHelper
- * 创建者：Create by liujc
+ * 创建者：Create by sean
  * 创建时间：Create on 2016/12/2 17:32
  * 描述：数据库迁移
  * 最近修改时间：2016/12/2 17:32
- * 修改人：Modify by liujc
+ * 修改人：Modify by sean
  */
 public final class MigrationHelper {
     public static boolean DEBUG = true;
@@ -32,6 +32,7 @@ public final class MigrationHelper {
     private static final String SQLITE_MASTER = "sqlite_master";
     private static final String SQLITE_TEMP_MASTER = "sqlite_temp_master";
 
+    @SafeVarargs
     public static void migrate(SQLiteDatabase db, Class<? extends AbstractDao<?, ?>>... daoClasses) {
         Database database = new StandardDatabase(db);
 
@@ -48,6 +49,7 @@ public final class MigrationHelper {
         printLog("【Restore data】complete");
     }
 
+    @SafeVarargs
     private static void generateTempTables(Database db, Class<? extends AbstractDao<?, ?>>... daoClasses) {
         for (int i = 0; i < daoClasses.length; i++) {
             String tempTableName = null;
@@ -68,7 +70,7 @@ public final class MigrationHelper {
                 insertTableStringBuilder.append("CREATE TEMPORARY TABLE ").append(tempTableName);
                 insertTableStringBuilder.append(" AS SELECT * FROM ").append(tableName).append(";");
                 db.execSQL(insertTableStringBuilder.toString());
-                printLog("【Table】" + tableName +"\n ---Columns-->"+getColumnsStr(daoConfig));
+                printLog("【Table】" + tableName + "\n ---Columns-->" + getColumnsStr(daoConfig));
                 printLog("【Generate temp table】" + tempTableName);
             } catch (SQLException e) {
                 Log.e(TAG, "【Failed to generate temp table】" + tempTableName, e);
@@ -82,7 +84,7 @@ public final class MigrationHelper {
         }
         String dbName = isTemp ? SQLITE_TEMP_MASTER : SQLITE_MASTER;
         String sql = "SELECT COUNT(*) FROM " + dbName + " WHERE type = ? AND name = ?";
-        Cursor cursor=null;
+        Cursor cursor = null;
         int count = 0;
         try {
             cursor = db.rawQuery(sql, new String[]{"table", tableName});
@@ -208,8 +210,8 @@ public final class MigrationHelper {
         return columns;
     }
 
-    private static void printLog(String info){
-        if(DEBUG){
+    private static void printLog(String info) {
+        if (DEBUG) {
             Log.d(TAG, info);
         }
     }

@@ -7,11 +7,11 @@ import com.liujc.greendao.dao.UserDao;
 
 /**
  * 类名称：V1Migration
- * 创建者：Create by liujc
+ * 创建者：Create by sean
  * 创建时间：Create on 2016/12/5 16:28
  * 描述：针对V1版本数据库升级逻辑
  * 最近修改时间：2016/12/5 16:28
- * 修改人：Modify by liujc
+ * 修改人：Modify by sean
  */
 public class V1Migration implements Migration{
     @Override

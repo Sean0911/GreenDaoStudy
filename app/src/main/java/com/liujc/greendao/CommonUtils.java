@@ -7,11 +7,11 @@ import java.io.File;
 
 /**
  * 类名称：CommonUtils
- * 创建者：Create by liujc
+ * 创建者：Create by sean
  * 创建时间：Create on 2016/12/5 11:36
  * 描述：TODO
  * 最近修改时间：2016/12/5 11:36
- * 修改人：Modify by liujc
+ * 修改人：Modify by sean
  */
 public class CommonUtils {
     public static String getSDPath() {

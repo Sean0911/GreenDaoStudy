@@ -19,11 +19,11 @@ import java.util.TreeMap;
 
 /**
  * 类名称：MySQLiteOpenHelper
- * 创建者：Create by liujc
+ * 创建者：Create by sean
  * 创建时间：Create on 2016/12/5 11:03
  * 描述：TODO
  * 最近修改时间：2016/12/5 11:03
- * 修改人：Modify by liujc
+ * 修改人：Modify by sean
  */
 public class MySQLiteOpenHelper extends DaoMaster.OpenHelper  {
     private static final SortedMap<Integer, Migration> ALL_MIGRATIONS = new TreeMap<>();
@@ -53,8 +53,8 @@ public class MySQLiteOpenHelper extends DaoMaster.OpenHelper  {
 //                ProfessionDao.class,
                 LTestDao.class);
 
-//        SortedMap<Integer, Migration> migrations = ALL_MIGRATIONS.subMap(oldVersion, newVersion);
-//        executeMigrations(db, migrations.keySet());
+        SortedMap<Integer, Migration> migrations = ALL_MIGRATIONS.subMap(oldVersion, newVersion);
+        executeMigrations(db, migrations.keySet());
 
     }
     private void executeMigrations(final SQLiteDatabase paramSQLiteDatabase, final Set<Integer>

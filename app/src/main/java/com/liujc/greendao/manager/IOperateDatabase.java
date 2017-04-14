@@ -8,11 +8,11 @@ import java.util.List;
 
 /**
  * 类名称：IDatabase
- * 创建者：Create by liujc
+ * 创建者：Create by sean
  * 创建时间：Create on 2016/12/21 09:11
  * 描述：TODO
  * 最近修改时间：2016/12/21 09:11
- * 修改人：Modify by liujc
+ * 修改人：Modify by sean
  */
 public interface IOperateDatabase<M, K> {
     //增加

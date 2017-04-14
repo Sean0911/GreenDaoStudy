@@ -6,11 +6,11 @@ import org.greenrobot.greendao.annotation.Generated;
 
 /**
  * 类名称：Classes
- * 创建者：Create by liujc
+ * 创建者：Create by sean
  * 创建时间：Create on 2016/12/5 10:05
  * 描述：TODO
  * 最近修改时间：2016/12/5 10:05
- * 修改人：Modify by liujc
+ * 修改人：Modify by sean
  */
 @Entity
 public class Profession {

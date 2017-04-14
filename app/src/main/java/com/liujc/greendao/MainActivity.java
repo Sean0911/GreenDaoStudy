@@ -1,9 +1,14 @@
 package com.liujc.greendao;
 
+import android.content.Context;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,11 +45,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     EditText editText;
     @BindView(R.id.show_msg)
     TextView show_msg;
+
+    private UserDbManager mUserDbManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        mUserDbManager = new UserDbManager();
         MigrationHelper.DEBUG = true;
         show_msg.setText("hlldf");
     }
@@ -53,84 +61,79 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v){
         switch (v.getId()){
             case R.id.insert:
-                insertdata(editText.getText().toString());
+                insertData(editText.getText().toString());
                 Toast.makeText(this,"insert",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.delete:
-                getUserDao().deleteByKey(Long.parseLong(editText.getText().toString()));
-                querydata();
+                mUserDbManager.deleteByKey(Long.parseLong(editText.getText().toString()));
+                Toast.makeText(this,"delete",Toast.LENGTH_SHORT).show();
+                queryData();
                 break;
             case R.id.update:
-                updatadata(Long.parseLong(editText.getText().toString()));
+                updateData(Long.parseLong(editText.getText().toString()));
+                Toast.makeText(this,"update",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.query:
-                querydata();
+                queryData();
+                Toast.makeText(this,"query",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.querydataBy:
-                querydataBy(editText.getText().toString());
+                queryDataBy(editText.getText().toString());
                 break;
             case R.id.btn_add:
-                insertdata(editText.getText().toString());
+                insertData(editText.getText().toString());
+                Toast.makeText(this,"insert",Toast.LENGTH_SHORT).show();
                 break;
         }
     }
     private void getuserById() {
 //        User user =getUserDao().load(1l);
-        User user = new UserDbManager().selectByPrimaryKey((long) 11);
+        User user = mUserDbManager.selectByPrimaryKey((long) 11);
         Log.i("tag", "结果：" + user.getId() + "," + user.getName() + "," + user.getAge() + "," + user.getIsBoy() + ";");
 
     }
 
-    private void insertdata(String name) {
-        //插入数据
+    //插入数据
+    private void insertData(String name) {
         User insertData = new User(null, name, 24, false,0);
-//        getUserDao().insert(insertData);
-        Log.d("TAG",new UserDbManager().insert(insertData)+"");
-        querydata();
+        Log.d("TAG",mUserDbManager.insert(insertData)+"");
+        queryData();
     }
 
-    private void updatadata(Long id) {
-        //更改数据
-        List<User> userss = getUserDao().loadAll();
+    //更改数据
+    private void updateData(Long id) {
         User user = new User(id, "更改后的数据用户", 22, true,0);
-//        getUserDao().update(user);
         new UserDbManager().update(user);
+        queryData();
     }
 
-    private void querydata() {
-        //查询数据详细
-//        List<User> users = getUserDao().loadAll();
-        List<User> users = getUserDao().loadAll();
-        StringBuffer sb = new StringBuffer();
+    //查询数据详细
+    private void queryData() {
+        List<User> users = mUserDbManager.loadAll();
+        StringBuilder sb = new StringBuilder();
         Log.i("tag", "当前数量：" + users.size());
         for (int i = 0; i < users.size(); i++) {
             Log.i("tag", "结果：" + users.get(i).getId() + "," + users.get(i).getName() + "," + users.get(i).getAge() + "," + users.get(i).getIsBoy() + ";");
-            sb.append(users.get(i).getId() + "," + users.get(i).getName() + "," + users.get(i).getAge() + "," + users.get(i).getIsBoy() + ";\n");
+            sb.append(users.get(i).getId()).append(",").append(users.get(i).getName()).append(",").append(users.get(i).getAge()).append(",").append(users.get(i).getIsBoy()).append(";\n");
 
         }
         show_msg.setText(sb.toString());
     }
 
-    private void querydataBy(String name) {////查询条件
-        Query<User> nQuery = getUserDao().getQueryBuilder()
+    private void queryDataBy(String name) {////查询条件
+        Query<User> nQuery = mUserDbManager.getQueryBuilder()
                 .where(UserDao.Properties.Name.eq(name))//.where(UserDao.Properties.Id.notEq(999))
                 .orderAsc(UserDao.Properties.Age)//.limit(5)//orderDesc
                 .build();
         List<User> users = nQuery.list();
         Log.i("tag", "当前数量：" + users.size());
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < users.size(); i++) {
             Log.i("tag", "结果：" + users.get(i).getId() + "," + users.get(i).getName() + "," + users.get(i).getAge() + "," + users.get(i).getIsBoy() + ";");
-            sb.append(users.get(i).getId() + "," + users.get(i).getName() + "," + users.get(i).getAge() + "," + users.get(i).getIsBoy() + ";\n");
+            sb.append(users.get(i).getId()).append(",").append(users.get(i).getName()).append(",").append(users.get(i).getAge()).append(",").append(users.get(i).getIsBoy()).append(";\n");
         }
         show_msg.setText(sb.toString());
-
-//        QueryBuilder qb = userDao.queryBuilder();
-//        qb.where(Properties.FirstName.eq("Joe"),
-//                qb.or(Properties.YearOfBirth.gt(1970),
-//                        qb.and(Properties.YearOfBirth.eq(1970), Properties.MonthOfBirth.ge(10))));
-//        List youngJoes = qb.list();
     }
 
 
@@ -141,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @return             数据列表
      */
     public List<User> queryN(String where, String... params){
-        return getUserDao().queryRaw(where, params);
+        return mUserDbManager.queryRaw(where, params);
     }
 
     /**
@@ -150,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @return 插件或修改的用户id
      */
     public boolean saveN(User user){
-        return getUserDao().insertOrReplace(user);
+        return mUserDbManager.insertOrReplace(user);
     }
 
     /**
@@ -161,12 +164,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(list == null || list.isEmpty()){
             return;
         }
-        getUserDao().runInTx(new Runnable() {
+        mUserDbManager.runInTx(new Runnable() {
             @Override
             public void run() {
                 for(int i=0; i<list.size(); i++){
                     User user = list.get(i);
-                    getUserDao().insertOrReplace(user);
+                    mUserDbManager.insertOrReplace(user);
                 }
             }
         });
@@ -177,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * 删除所有数据
      */
     public void deleteAllNote(){
-        getUserDao().deleteAll();
+        mUserDbManager.deleteAll();
     }
 
     /**
@@ -185,12 +188,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @param user    用户信息类
      */
     public void deleteNote(User user){
-        getUserDao().delete(user);
+        mUserDbManager.delete(user);
     }
-//    private UserDao getUserDao() {
-//        return GreenDaoManager.getInstance().getSession().getUserDao();
-//    }
-    private UserDbManager getUserDao() {
-        return new UserDbManager();
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if(ev.getAction() == MotionEvent.ACTION_DOWN){
+            View view = getCurrentFocus();
+            if(view != null && isHideInput(view,ev)){
+                hideSoftInput(view.getWindowToken());
+            }
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
+    private boolean isHideInput(View view, MotionEvent ev) {
+        if(view instanceof EditText){
+            int[] l = {0,0};
+            view.getLocationInWindow(l);
+            int left = l[0], top = l[1], bottom = top + view.getHeight(), right = left + view.getWidth();
+            if(ev.getX() > left && ev.getX() < right && ev.getY() < bottom && ev.getY() > top){
+                return false;
+            }else {
+                return true;
+            }
+        }
+        return true;
+    }
+
+    private void hideSoftInput(IBinder token){
+        InputMethodManager methodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        methodManager.hideSoftInputFromWindow(token,InputMethodManager.HIDE_NOT_ALWAYS);
     }
 }

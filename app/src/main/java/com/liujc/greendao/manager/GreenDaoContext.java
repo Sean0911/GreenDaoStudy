@@ -15,11 +15,11 @@ import java.io.IOException;
 
 /**
  * 类名称：GreenDaoContext
- * 创建者：Create by liujc
+ * 创建者：Create by sean
  * 创建时间：Create on 2016/12/5 11:33
  * 描述：主要用于基于GreenDao框架自定义数据库路径
  * 最近修改时间：2016/12/5 11:33
- * 修改人：Modify by liujc
+ * 修改人：Modify by sean
  */
 public class GreenDaoContext  extends ContextWrapper {
 
