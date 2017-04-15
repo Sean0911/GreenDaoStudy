@@ -1,0 +1,4 @@
+# GreenDaoStudy
+GreenDao学习
+封装GreenDaoManager
+自定义MySQLiteOpenHelper实现数据库迁移升级
